@@ -5,6 +5,8 @@ import sqlalchemy
 from sqlalchemy.pool import NullPool
 from google.cloud.alloydb.connector import Connector as AlloyDBConnector
 from google.cloud.alloydb.connector import IPTypes as AlloyDBIPTypes
+from util.auth import get_adc_user_email
+import logging
 
 CONNECTOR = AlloyDBConnector()
 
@@ -22,13 +24,20 @@ class AlloyDB(PGDB):
             CONNECTOR._alloydb_api_endpoint = db_config['api_endpoint']
 
         def get_conn_alloydb():
+            db_user = self.username
+            db_password = self.password
+            use_adc = not self.username and not self.password
+            if use_adc:
+                db_user = get_adc_user_email()
+                db_password = None
+
             return CONNECTOR.connect(
                 self.db_path,
                 "pg8000",
-                user=self.username,
-                password=self.password,
+                user=db_user,
+                password=self.password if not use_adc else None,
                 db=self.db_name,
-                enable_iam_auth=False,
+                enable_iam_auth=use_adc,
                 ip_type=AlloyDBIPTypes.PUBLIC,
             )
 
