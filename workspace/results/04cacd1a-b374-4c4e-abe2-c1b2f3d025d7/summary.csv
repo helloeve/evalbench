@@ -1,0 +1,8 @@
+metric_name,metric_score,correct_results_count,total_results_count,job_id,run_time
+trajectory_matcher,100.0,0.0,5,04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651
+goal_completion,100.0,5.0,5,04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651
+turn_count,3.0,15.0,5,04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651
+end_to_end_latency,95831.8,479159.0,5,04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651
+tool_call_latency,18379.8,91899.0,5,04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651
+token_consumption,292511.2,1462556.0,5,04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651
+executable,1.0,5.0,5,04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651

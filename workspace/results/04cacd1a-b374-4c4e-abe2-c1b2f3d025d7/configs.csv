@@ -1,0 +1,17 @@
+job_id,run_time,config,value
+04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651,db_configs,[]
+04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651,experiment_config.dataset_config,../datasets/context-engineering-agent/dataset.json
+04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651,experiment_config.dataset_format,gemini-cli-format
+04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651,experiment_config.orchestrator,geminicli
+04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651,experiment_config.model_config,../datasets/context-engineering-agent/model.yaml
+04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651,experiment_config.simulated_user_model_config,../datasets/model_configs/gemini_2.5_pro_model.yaml
+04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651,experiment_config.scorers.goal_completion.model_config,../datasets/model_configs/gemini_2.5_pro_model.yaml
+04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651,experiment_config.scorers.behavioral_metrics.model_config,../datasets/model_configs/gemini_2.5_pro_model.yaml
+04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651,experiment_config.reporting.csv.output_directory,results
+04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651,model_config.gemini_cli_version,@google/gemini-cli@0.36.0
+04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651,model_config.generator,gemini_cli
+04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651,model_config.env.GOOGLE_CLOUD_PROJECT,cloud-db-nl2sql
+04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651,model_config.env.GOOGLE_CLOUD_LOCATION,us-central1
+04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651,model_config.env.GOOGLE_GENAI_USE_VERTEXAI,true
+04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651,model_config.env.GEMINI_API_MODEL,gemini-2.5-flash
+04cacd1a-b374-4c4e-abe2-c1b2f3d025d7,2026-04-28 17:54:04.586651,model_config.env.GEMINI_MODEL,gemini-2.5-flash

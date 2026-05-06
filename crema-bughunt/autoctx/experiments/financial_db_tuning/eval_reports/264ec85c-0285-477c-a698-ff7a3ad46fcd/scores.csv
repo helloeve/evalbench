@@ -1,0 +1,42 @@
+comparator,comparison_error,comparison_logs,database,dialects,generated_error,generated_sql,id,job_id,score
+llmrater,,Skipped. Exact Match was found.,financial,['postgres'],,"SELECT CASE WHEN AVG(""district"".""A12"") > AVG(""district"".""A13"") THEN '1995' WHEN AVG(""district"".""A13"") > AVG(""district"".""A12"") THEN '1996' ELSE 'Equal' END FROM ""district"" WHERE ""district"".""A12"" IS NOT NULL AND ""district"".""A13"" IS NOT NULL;",eval_003,264ec85c-0285-477c-a698-ff7a3ad46fcd,100
+llmrater,,Skipped. Exact Match was found.,financial,['postgres'],,"SELECT COUNT(""district"".""district_id"") FROM ""district"" WHERE ""district"".""A11"" > 6000 AND ""district"".""A11"" < 10000;",eval_004,264ec85c-0285-477c-a698-ff7a3ad46fcd,100
+llmrater,,Skipped. Exact Match was found.,financial,['postgres'],,"SELECT COUNT(DISTINCT ""public"".""account"".""account_id"") FROM ""public"".""account"" JOIN ""public"".""district"" ON ""public"".""account"".""district_id"" = ""public"".""district"".""district_id"" JOIN ""public"".""loan"" ON ""public"".""account"".""account_id"" = ""public"".""loan"".""account_id"" WHERE ""public"".""district"".""A3"" = 'Prague'",eval_002,264ec85c-0285-477c-a698-ff7a3ad46fcd,100
+llmrater,,"The question asks for a single count.
+OUTPUT #1 provides `{'count': 280}`.
+OUTPUT #2 provides `{'count': 0}`.
+
+Assuming OUTPUT #1 is the gold standard and its core data value is correct (280), OUTPUT #2 provides a different and incorrect count (0). This is a direct numerical discrepancy for the primary piece of information requested.
+
+FINAL ANSWER: INCORRECT_INFORMATION
+Error analysis:
+
+**Reasoning:**
+The Golden SQL and Generated SQL are very similar in their structure and the columns they use for selection and filtering. Both queries correctly join the `client` and `district` tables, count `client_id`, filter by `gender = 'M'`, and apply the condition `A11 > 8000`.
+
+The critical difference lies in the literal string value used for filtering the `A3` column (which represents the district name). The Golden SQL uses `'north Bohemia'` (lowercase 'n'), while the Generated SQL uses `'North Bohemia'` (uppercase 'N'). This case mismatch in the literal value is likely causing the Generated SQL to return 0 results, whereas the Golden SQL returns 280. This indicates that the data in the `district.A3` column is case-sensitive and stores 'north Bohemia' with a lowercase 'n'.
+
+**Tags & Explanations:**
+* **[ValueLinkingError]**: The literal string value used for filtering the `A3` column ('North Bohemia') does not match the expected case ('north Bohemia'), leading to an incorrect filter and zero results.",financial,['postgres'],,"SELECT count(""public"".""client"".""client_id"") FROM ""public"".""client"" JOIN ""public"".""district"" ON ""public"".""client"".""district_id"" = ""public"".""district"".""district_id"" WHERE ""public"".""client"".""gender"" = 'M' AND ""public"".""district"".""A3"" = 'North Bohemia' AND ""public"".""district"".""A11"" > 8000;",eval_005,264ec85c-0285-477c-a698-ff7a3ad46fcd,0
+llmrater,,"The generated query returned `{'count': 0}` while the gold standard expects `{'count': 13}`. The core information requested by the question is a count, and the count provided by the generated result is different and incorrect compared to the gold standard.
+
+This falls under the category of ""INCORRECT_INFORMATION"" because OUTPUT #2 contains mathematically incorrect data.
+
+FINAL ANSWER: INCORRECT_INFORMATION
+Error analysis:
+
+**Reasoning:**
+The core difference lies in the interpretation of the phrase ""who choose issuance after transaction.""
+
+1.**Golden SQL's Interpretation:** The Golden SQL interprets ""who choose issuance after transaction"" as a property of the account itself, specifically mapping it to `account.frequency = 'POPLATEK PO OBRATU'`. This suggests a domain-specific understanding where 'POPLATEK PO OBRATU' (FEE AFTER TURNOVER) is the designated frequency type for such accounts.
+
+2.**Generated SQL's Interpretation:** The Generated SQL attempts a more literal interpretation, linking `card` issuance dates and `trans`action dates via `card.issued > trans.date`. To achieve this, it introduces additional joins to `trans`, `disp`, and `card` tables, which are not present in the Golden SQL.
+
+As a result of this differing interpretation, the filtering logic is completely different. The Golden SQL filters based on an `account` attribute (`frequency`), while the Generated SQL filters based on a temporal relationship between `card` and `trans` actions. This fundamental misinterpretation leads to a different set of accounts being selected, resulting in a count of 0 for the Generated SQL versus 13 for the Golden SQL.
+
+The case difference in `'East Bohemia'` vs `'east Bohemia'` for the district name is minor and typically handled by database collation settings; it is not the primary cause of the discrepancy.
+
+**Tags & Explanations:**
+* **IntentError**: The Generated SQL fundamentally misinterpreted the phrase ""who choose issuance after transaction."" It attempted a literal temporal comparison (`card.issued > trans.date`) instead of identifying the underlying account characteristic (`account.frequency = 'POPLATEK PO OBRATU'`) implied by the prompt and Golden SQL.
+* **FilterError**: Due to the misinterpretation of intent, the Generated SQL used an incorrect filtering condition (`card.issued > trans.date`). The correct condition, based on the Golden SQL, should have been `account.frequency = 'POPLATEK PO OBRATU'`.
+* **EntityError**: The Generated SQL included unnecessary table joins (`trans`, `disp`, `card`) to support its incorrect interpretation of the filtering condition. These entities are not required for the correct query as indicated by the Golden SQL.",financial,['postgres'],,"SELECT COUNT(DISTINCT ""account"".""account_id"") FROM ""account"" JOIN ""district"" ON ""account"".""district_id"" = ""district"".""district_id"" JOIN ""trans"" ON ""account"".""account_id"" = ""trans"".""account_id"" JOIN ""disp"" ON ""account"".""account_id"" = ""disp"".""account_id"" JOIN ""card"" ON ""disp"".""disp_id"" = ""card"".""disp_id"" WHERE ""district"".""A3"" = 'East Bohemia' AND ""card"".""issued"" > ""trans"".""date""",eval_001,264ec85c-0285-477c-a698-ff7a3ad46fcd,0

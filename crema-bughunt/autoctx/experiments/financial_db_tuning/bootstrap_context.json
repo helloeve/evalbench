@@ -1,0 +1,82 @@
+{
+  "templates": [
+    {
+      "nl_query": "How many clients are there?",
+      "sql": "SELECT count(client_id) FROM public.client",
+      "intent": "Count all clients",
+      "manifest": "Count all clients",
+      "parameterized": {
+        "parameterized_sql": "SELECT count(client_id) FROM public.client",
+        "parameterized_intent": "Count all clients"
+      }
+    },
+    {
+      "nl_query": "List all transactions for a specific account.",
+      "sql": "SELECT * FROM public.trans WHERE account_id = 123",
+      "intent": "Get transactions for an account",
+      "manifest": "Get transactions for an account",
+      "parameterized": {
+        "parameterized_sql": "SELECT * FROM public.trans WHERE account_id = 123",
+        "parameterized_intent": "Get transactions for an account"
+      }
+    },
+    {
+      "nl_query": "What are the details of a specific loan?",
+      "sql": "SELECT * FROM public.loan WHERE loan_id = 456",
+      "intent": "Get loan details by ID",
+      "manifest": "Get loan details by a given number",
+      "parameterized": {
+        "parameterized_sql": "SELECT * FROM public.loan WHERE loan_id = 456",
+        "parameterized_intent": "Get loan details by ID"
+      }
+    },
+    {
+      "nl_query": "List all clients and the names of their districts.",
+      "sql": "SELECT c.client_id, d.\"A2\" as district_name FROM public.client c JOIN public.district d ON c.district_id = d.district_id",
+      "intent": "Get client district information",
+      "manifest": "Get client district information",
+      "parameterized": {
+        "parameterized_sql": "SELECT c.client_id, d.\"A2\" as district_name FROM public.client c JOIN public.district d ON c.district_id = d.district_id",
+        "parameterized_intent": "Get client district information"
+      }
+    }
+  ],
+  "facets": [
+    {
+      "sql_snippet": "loan.amount > 100000",
+      "intent": "High amount loans",
+      "manifest": "High amount loans",
+      "parameterized": {
+        "parameterized_sql_snippet": "loan.amount > 100000",
+        "parameterized_intent": "High amount loans"
+      }
+    },
+    {
+      "sql_snippet": "client.gender = 'M'",
+      "intent": "Male clients",
+      "manifest": "Male clients",
+      "parameterized": {
+        "parameterized_sql_snippet": "client.gender = 'M'",
+        "parameterized_intent": "Male clients"
+      }
+    },
+    {
+      "sql_snippet": "card.type = 'credit'",
+      "intent": "Credit cards",
+      "manifest": "a given product",
+      "parameterized": {
+        "parameterized_sql_snippet": "card.type = 'credit'",
+        "parameterized_intent": "Credit cards"
+      }
+    },
+    {
+      "sql_snippet": "trans.date >= '1998-01-01'",
+      "intent": "Recent transactions",
+      "manifest": "Recent transactions",
+      "parameterized": {
+        "parameterized_sql_snippet": "trans.date >= '1998-01-01'",
+        "parameterized_intent": "Recent transactions"
+      }
+    }
+  ]
+}

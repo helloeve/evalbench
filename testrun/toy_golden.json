@@ -1,0 +1,550 @@
+[
+    {
+        "id": 1,
+        "nl_prompt": "How many accounts who choose issuance after transaction are staying in East Bohemia region? A3 contains the data of region; 'POPLATEK PO OBRATU' represents for 'issuance after transaction'.",
+        "query_type": "DQL",
+        "database": "financial",
+        "dialects": [
+            "postgres",
+            "mysql",
+            "sqlserver",
+            "googlesql",
+            "spanner_pg",
+            "spanner_gsql",
+            "sqlite"
+        ],
+        "golden_sql": {
+            "postgres": [
+                "SELECT COUNT(DISTINCT \"T1\".\"account_id\") FROM \"account\" AS \"T1\" INNER JOIN \"district\" AS \"T2\" ON \"T1\".\"district_id\" = \"T2\".\"district_id\" WHERE \"T2\".\"A3\" = 'east Bohemia' AND \"T1\".\"frequency\" = 'POPLATEK PO OBRATU'",
+                "SELECT COUNT(\"T1\".\"district_id\") FROM \"district\" AS \"T1\" INNER JOIN \"account\" AS \"T2\" ON \"T1\".\"district_id\" = \"T2\".\"district_id\" WHERE \"T1\".\"A3\" = 'East Bohemia' AND \"T2\".\"frequency\" = 'POPLATEK PO OBRATU'"
+            ],
+            "googlesql": [
+                "SELECT COUNT(DISTINCT T1.account_id) FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.A3 = 'east Bohemia' AND T1.frequency = 'POPLATEK PO OBRATU'",
+                "SELECT COUNT(T1.district_id) FROM district AS T1 INNER JOIN account AS T2 ON T1.district_id = T2.district_id WHERE T1.A3 = 'East Bohemia' AND T2.frequency = 'POPLATEK PO OBRATU'"
+            ],
+            "mysql": [
+                "SELECT COUNT(DISTINCT t2.account_id) FROM district AS t1 JOIN account AS t2 ON t1.district_id = t2.district_id WHERE t1.a3 = 'East Bohemia' AND t2.frequency = 'POPLATEK PO OBRATU'",
+                "SELECT CAST(count(t1.district_id) as DECIMAL) FROM district AS t1 JOIN account AS t2 ON t1.district_id = t2.district_id WHERE t1.a3 = 'East Bohemia' AND t2.frequency = 'POPLATEK PO OBRATU'"
+            ],
+            "sqlserver": [
+                " SELECT COUNT(T1.[district_id]) FROM district AS T1 INNER JOIN account AS T2 ON T1.[district_id] = T2.[district_id] WHERE T1.[A3] = 'East Bohemia' AND T2.[frequency] = 'POPLATEK PO OBRATU' "
+            ],
+            "spanner_pg": [
+                "SELECT COUNT(DISTINCT \"T1\".\"account_id\") FROM \"account\" AS \"T1\" INNER JOIN \"district\" AS \"T2\" ON \"T1\".\"district_id\" = \"T2\".\"district_id\" WHERE \"T2\".\"A3\" = 'east Bohemia' AND \"T1\".\"frequency\" = 'POPLATEK PO OBRATU'"
+            ],
+            "spanner_gsql": [
+                "SELECT COUNT(DISTINCT `T1`.`account_id`) FROM `account` AS `T1` INNER JOIN `district` AS `T2` ON `T1`.`district_id` = `T2`.`district_id` WHERE `T2`.`A3` = 'east Bohemia' AND `T1`.`frequency` = 'POPLATEK PO OBRATU'"
+            ],
+            "sqlite": [
+                "SELECT COUNT(DISTINCT `T1`.`account_id`) FROM `account` AS `T1` INNER JOIN `district` AS `T2` ON `T1`.`district_id` = `T2`.`district_id` WHERE `T2`.`A3` = 'east Bohemia' AND `T1`.`frequency` = 'POPLATEK PO OBRATU'"
+            ]
+        },
+        "eval_query": {},
+        "setup_sql": {},
+        "cleanup_sql": {},
+        "tags": [
+            "difficulty: moderate"
+        ],
+        "other": {
+            "question_id": 89,
+            "question": "How many accounts who choose issuance after transaction are staying in East Bohemia region?",
+            "evidence": "A3 contains the data of region; 'POPLATEK PO OBRATU' represents for 'issuance after transaction'.",
+            "SQLite_query": "SELECT COUNT(T1.district_id) FROM district AS T1 INNER JOIN account AS T2 ON T1.district_id = T2.district_id WHERE T1.A3 = 'East Bohemia' AND T2.frequency = 'POPLATEK PO OBRATU'",
+            "result_matched_postgres": true,
+            "result_matched_mysql": false,
+            "result_matched_sqlserver": false
+        }
+    },
+    {
+        "id": 2,
+        "nl_prompt": "How many accounts who have region in Prague are eligible for loans? A3 contains the data of region",
+        "query_type": "DQL",
+        "database": "financial",
+        "dialects": [
+            "postgres",
+            "mysql",
+            "sqlserver",
+            "googlesql",
+            "spanner_pg",
+            "spanner_gsql",
+            "sqlite"
+        ],
+        "golden_sql": {
+            "postgres": [
+                "SELECT COUNT(\"T1\".\"account_id\") FROM \"account\" AS \"T1\" INNER JOIN \"loan\" AS \"T2\" ON \"T1\".\"account_id\" = \"T2\".\"account_id\" INNER JOIN \"district\" AS \"T3\" ON \"T1\".\"district_id\" = \"T3\".\"district_id\" WHERE \"T3\".\"A3\" = 'Prague'"
+            ],
+            "googlesql": [
+                "SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN loan AS T2 ON T1.account_id = T2.account_id INNER JOIN district AS T3 ON T1.district_id = T3.district_id WHERE T3.A3 = 'Prague'"
+            ],
+            "mysql": [
+                "SELECT CAST(count(t1.account_id) as DECIMAL) FROM account AS t1 JOIN loan AS t2 ON t1.account_id = t2.account_id JOIN district AS t3 ON t1.district_id = t3.district_id WHERE t3.a3 = 'Prague'"
+            ],
+            "sqlserver": [
+                " SELECT COUNT([T1].[account_id]) FROM [account] AS [T1] INNER JOIN [loan] AS [T2] ON [T1].[account_id] = [T2].[account_id] INNER JOIN [district] AS [T3] ON [T1].[district_id] = [T3].[district_id] WHERE [T3].[A3] = 'Prague' "
+            ],
+            "spanner_pg": [
+                "SELECT COUNT(\"T1\".\"account_id\") FROM \"account\" AS \"T1\" INNER JOIN \"loan\" AS \"T2\" ON \"T1\".\"account_id\" = \"T2\".\"account_id\" INNER JOIN \"district\" AS \"T3\" ON \"T1\".\"district_id\" = \"T3\".\"district_id\" WHERE \"T3\".\"A3\" = 'Prague'"
+            ],
+            "spanner_gsql": [
+                "SELECT COUNT(`T1`.`account_id`) FROM `account` AS `T1` INNER JOIN `loan` AS `T2` ON `T1`.`account_id` = `T2`.`account_id` INNER JOIN `district` AS `T3` ON `T1`.`district_id` = `T3`.`district_id` WHERE `T3`.`A3` = 'Prague'"
+            ],
+            "sqlite": [
+                "SELECT COUNT(`T1`.`account_id`) FROM `account` AS `T1` INNER JOIN `loan` AS `T2` ON `T1`.`account_id` = `T2`.`account_id` INNER JOIN `district` AS `T3` ON `T1`.`district_id` = `T3`.`district_id` WHERE `T3`.`A3` = 'Prague'"
+            ]
+        },
+        "eval_query": {},
+        "setup_sql": {},
+        "cleanup_sql": {},
+        "tags": [
+            "difficulty: simple"
+        ],
+        "other": {
+            "question_id": 90,
+            "question": "How many accounts who have region in Prague are eligible for loans?",
+            "evidence": "A3 contains the data of region",
+            "SQLite_query": "SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN loan AS T2 ON T1.account_id = T2.account_id INNER JOIN district AS T3 ON T1.district_id = T3.district_id WHERE T3.A3 = 'Prague'",
+            "result_matched_postgres": true,
+            "result_matched_mysql": true,
+            "result_matched_sqlserver": false
+        }
+    },
+    {
+        "id": 3,
+        "nl_prompt": "The average unemployment ratio of 1995 and 1996, which one has higher percentage? A12 refers to unemploymant rate 1995; A13 refers to unemploymant rate 1996",
+        "query_type": "DQL",
+        "database": "financial",
+        "dialects": [
+            "postgres",
+            "mysql",
+            "sqlserver",
+            "googlesql",
+            "spanner_pg",
+            "spanner_gsql",
+            "sqlite"
+        ],
+        "golden_sql": {
+            "postgres": [
+                "SELECT DISTINCT CASE WHEN AVG(\"A13\") > AVG(\"A12\") THEN '1996' ELSE '1995' END FROM \"district\""
+            ],
+            "googlesql": [
+                "SELECT DISTINCT CASE WHEN AVG(A13) > AVG(A12) THEN '1996' ELSE '1995' END FROM district"
+            ],
+            "mysql": [
+                "SELECT DISTINCT CASE WHEN avg(district.a13) > avg(district.a12) THEN '1996' ELSE '1995' END FROM district"
+            ],
+            "sqlserver": [
+                " SELECT DISTINCT CASE WHEN AVG([A13]) > AVG([A12]) THEN '1996' ELSE '1995' END FROM district "
+            ],
+            "spanner_pg": [
+                "SELECT DISTINCT CASE WHEN AVG(\"A13\") > AVG(\"A12\") THEN '1996' ELSE '1995' END FROM \"district\""
+            ],
+            "spanner_gsql": [
+                "SELECT DISTINCT CASE WHEN AVG(`A13`) > AVG(`A12`) THEN '1996' ELSE '1995' END FROM `district`"
+            ],
+            "sqlite": [
+                "SELECT DISTINCT CASE WHEN AVG(`A13`) > AVG(`A12`) THEN '1996' ELSE '1995' END FROM `district`"
+            ]
+        },
+        "eval_query": {},
+        "setup_sql": {},
+        "cleanup_sql": {},
+        "tags": [
+            "difficulty: simple"
+        ],
+        "other": {
+            "question_id": 91,
+            "question": "The average unemployment ratio of 1995 and 1996, which one has higher percentage?",
+            "evidence": "A12 refers to unemploymant rate 1995; A13 refers to unemploymant rate 1996",
+            "SQLite_query": "SELECT DISTINCT IIF(AVG(A13) > AVG(A12), '1996', '1995') FROM district",
+            "result_matched_postgres": true,
+            "result_matched_mysql": true,
+            "result_matched_sqlserver": false
+        }
+    },
+    {
+        "id": 4,
+        "nl_prompt": "List out the no. of districts that have female average salary is more than 6000 but less than 10000? A11 refers to average salary; Female mapps to gender = 'F'",
+        "query_type": "DQL",
+        "database": "financial",
+        "dialects": [
+            "postgres",
+            "mysql",
+            "sqlserver",
+            "googlesql",
+            "spanner_pg",
+            "spanner_gsql",
+            "sqlite"
+        ],
+        "golden_sql": {
+            "postgres": [
+                "SELECT COUNT(DISTINCT \"T1\".\"district_id\") FROM \"district\" AS \"T1\" INNER JOIN \"client\" AS \"T2\" ON \"T1\".\"district_id\" = \"T2\".\"district_id\" WHERE \"T2\".\"gender\" = 'F' AND \"T1\".\"A11\" BETWEEN 6000 AND 10000;",
+                "SELECT DISTINCT \"T2\".\"district_id\" FROM \"client\" AS \"T1\" INNER JOIN \"district\" AS \"T2\" ON \"T1\".\"district_id\" = \"T2\".\"district_id\" WHERE \"T1\".\"gender\" = 'F' AND \"T2\".\"A11\" BETWEEN 6000 AND 10000"
+            ],
+            "googlesql": [
+                "SELECT COUNT(DISTINCT T1.district_id) FROM district AS T1 INNER JOIN client AS T2 ON T1.district_id = T2.district_id WHERE T2.gender = 'F' AND T1.A11 BETWEEN 6000 AND 10000",
+                "SELECT DISTINCT T2.district_id FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T1.gender = 'F' AND T2.A11 BETWEEN 6000 AND 10000"
+            ],
+            "mysql": [
+                "SELECT COUNT(DISTINCT t2.district_id) FROM client AS t1 JOIN district AS t2 ON t1.district_id = t2.district_id WHERE t1.gender = 'F' AND t2.a11 > 6000 AND t2.a11 < 10000",
+                "SELECT DISTINCT t2.district_id FROM client AS t1 JOIN district AS t2 ON t1.district_id = t2.district_id WHERE t1.gender = 'F' AND t2.a11 BETWEEN 6000 AND 10000"
+            ],
+            "sqlserver": [
+                "SELECT COUNT(*) FROM ( SELECT [T1].[district_id] FROM [district] AS [T1] INNER JOIN [client] AS [T2] ON [T1].[district_id] = [T2].[district_id] WHERE [T2].[gender] = 'F' GROUP BY [T1].[district_id] HAVING AVG([T1].[A11]) > 6000 AND AVG([T1].[A11]) < 10000 ) AS [FilteredDistricts];",
+                " SELECT DISTINCT [T2].[district_id] FROM [client] AS [T1] INNER JOIN [district] AS [T2] ON [T1].[district_id] = [T2].[district_id] WHERE [T1].[gender] = 'F' AND [T2].[A11] BETWEEN 6000 AND 10000 "
+            ],
+            "spanner_pg": [
+                "SELECT COUNT(DISTINCT \"T1\".\"district_id\") FROM \"district\" AS \"T1\" INNER JOIN \"client\" AS \"T2\" ON \"T1\".\"district_id\" = \"T2\".\"district_id\" WHERE \"T2\".\"gender\" = 'F' AND \"T1\".\"A11\" BETWEEN 6000 AND 10000;"
+            ],
+            "spanner_gsql": [
+                "SELECT COUNT(DISTINCT `T1`.`district_id`) FROM `district` AS `T1` INNER JOIN `client` AS `T2` ON `T1`.`district_id` = `T2`.`district_id` WHERE `T2`.`gender` = 'F' AND `T1`.`A11` BETWEEN 6000 AND 10000;"
+            ],
+            "sqlite": [
+                "SELECT COUNT(DISTINCT `T1`.`district_id`) FROM `district` AS `T1` INNER JOIN `client` AS `T2` ON `T1`.`district_id` = `T2`.`district_id` WHERE `T2`.`gender` = 'F' AND `T1`.`A11` BETWEEN 6000 AND 10000;"
+            ]
+        },
+        "eval_query": {},
+        "setup_sql": {},
+        "cleanup_sql": {},
+        "tags": [
+            "difficulty: simple"
+        ],
+        "other": {
+            "question_id": 92,
+            "question": "List out the no. of districts that have female average salary is more than 6000 but less than 10000?",
+            "evidence": "A11 refers to average salary; Female mapps to gender = 'F'",
+            "SQLite_query": "SELECT DISTINCT T2.district_id FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T1.gender = 'F' AND T2.A11 BETWEEN 6000 AND 10000",
+            "result_matched_postgres": false,
+            "result_matched_mysql": false,
+            "result_matched_sqlserver": false
+        }
+    },
+    {
+        "id": 5,
+        "nl_prompt": "How many male customers who are living in North Bohemia have average salary greater than 8000? Male means that gender = 'M'; A3 refers to region; A11 pertains to average salary.",
+        "query_type": "DQL",
+        "database": "financial",
+        "dialects": [
+            "postgres",
+            "mysql",
+            "sqlserver",
+            "googlesql",
+            "spanner_pg",
+            "spanner_gsql",
+            "sqlite"
+        ],
+        "golden_sql": {
+            "postgres": [
+                "SELECT COUNT(\"T1\".\"client_id\") FROM \"client\" AS \"T1\" INNER JOIN \"district\" AS \"T2\" ON \"T1\".\"district_id\" = \"T2\".\"district_id\" WHERE \"T1\".\"gender\" = 'M' AND \"T2\".\"A3\" = 'north Bohemia' AND \"T2\".\"A11\" > 8000",
+                "SELECT COUNT(\"T1\".\"client_id\") FROM \"client\" AS \"T1\" INNER JOIN \"district\" AS \"T2\" ON \"T1\".\"district_id\" = \"T2\".\"district_id\" WHERE \"T1\".\"gender\" = 'M' AND \"T2\".\"A3\" = 'North Bohemia' AND \"T2\".\"A11\" > 8000"
+            ],
+            "googlesql": [
+                "SELECT COUNT(T1.client_id) FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T1.gender = 'M' AND T2.A3 = 'North Bohemia' AND T2.A11 > 8000"
+            ],
+            "mysql": [
+                "SELECT CAST(count(t1.client_id) as DECIMAL) FROM client AS t1 JOIN district AS t2 ON t1.district_id = t2.district_id WHERE t1.gender = 'M' AND t2.a3 = 'North Bohemia' AND t2.a11 > 8000"
+            ],
+            "sqlserver": [
+                " SELECT COUNT([T1].[client_id]) FROM [client] AS [T1] INNER JOIN [district] AS [T2] ON [T1].[district_id] = [T2].[district_id] WHERE [T1].[gender] = 'M' AND [T2].[A3] = 'North Bohemia' AND [T2].[A11] > 8000 "
+            ],
+            "spanner_pg": [
+                "SELECT COUNT(\"T1\".\"client_id\") FROM \"client\" AS \"T1\" INNER JOIN \"district\" AS \"T2\" ON \"T1\".\"district_id\" = \"T2\".\"district_id\" WHERE \"T1\".\"gender\" = 'M' AND \"T2\".\"A3\" = 'north Bohemia' AND \"T2\".\"A11\" > 8000"
+            ],
+            "spanner_gsql": [
+                "SELECT COUNT(`T1`.`client_id`) FROM `client` AS `T1` INNER JOIN `district` AS `T2` ON `T1`.`district_id` = `T2`.`district_id` WHERE `T1`.`gender` = 'M' AND `T2`.`A3` = 'north Bohemia' AND `T2`.`A11` > 8000"
+            ],
+            "sqlite": [
+                "SELECT COUNT(`T1`.`client_id`) FROM `client` AS `T1` INNER JOIN `district` AS `T2` ON `T1`.`district_id` = `T2`.`district_id` WHERE `T1`.`gender` = 'M' AND `T2`.`A3` = 'north Bohemia' AND `T2`.`A11` > 8000"
+            ]
+        },
+        "eval_query": {},
+        "setup_sql": {},
+        "cleanup_sql": {},
+        "tags": [
+            "difficulty: moderate"
+        ],
+        "other": {
+            "question_id": 93,
+            "question": "How many male customers who are living in North Bohemia have average salary greater than 8000?",
+            "evidence": "Male means that gender = 'M'; A3 refers to region; A11 pertains to average salary.",
+            "SQLite_query": "SELECT COUNT(T1.client_id) FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T1.gender = 'M' AND T2.A3 = 'North Bohemia' AND T2.A11 > 8000",
+            "result_matched_postgres": true,
+            "result_matched_mysql": false,
+            "result_matched_sqlserver": false
+        }
+    },
+    {
+        "id": 6,
+        "nl_prompt": "List out the account numbers of female clients who are oldest and has lowest average salary, calculate the gap between this lowest average salary with the highest average salary? Female means gender = 'F'; A11 refers to average salary; Gap = highest average salary - lowest average salary; If the person A's birthdate > B's birthdate, it means that person B is order than person A.",
+        "query_type": "DQL",
+        "database": "financial",
+        "dialects": [
+            "postgres",
+            "mysql",
+            "sqlserver",
+            "googlesql",
+            "spanner_pg",
+            "spanner_gsql",
+            "sqlite"
+        ],
+        "golden_sql": {
+            "postgres": [
+                "SELECT \"disp\".\"account_id\", (SELECT MAX(\"A11\") - MIN(\"A11\") FROM \"district\") as gap FROM \"disp\" INNER JOIN \"client\" ON \"disp\".\"client_id\" = \"client\".\"client_id\" WHERE \"client\".\"client_id\" IN ( SELECT \"c\".\"client_id\" FROM \"client\" AS \"c\" INNER JOIN \"district\" AS \"d\" ON \"c\".\"district_id\" = \"d\".\"district_id\" WHERE \"c\".\"gender\" = 'F' ORDER BY \"d\".\"A11\" ASC, \"c\".\"birth_date\" ASC LIMIT 1 )",
+                "SELECT \"T1\".\"account_id\", ( SELECT max(\"A11\") - min(\"A11\") FROM \"district\" ) FROM \"account\" AS \"T1\" INNER JOIN \"district\" AS \"T2\" ON \"T1\".\"district_id\" = \"T2\".\"district_id\" WHERE \"T2\".\"district_id\" = ( SELECT \"district_id\" FROM \"client\" WHERE \"gender\" = 'F' ORDER BY \"birth_date\" ASC LIMIT 1 ) ORDER BY \"T2\".\"A11\" DESC NULLS LAST LIMIT 1"
+            ],
+            "googlesql": [
+                "SELECT disp.account_id, (SELECT MAX(A11) - MIN(A11) FROM district) as gap FROM disp INNER JOIN client ON disp.client_id = client.client_id WHERE client.client_id IN ( SELECT c.client_id FROM client AS c INNER JOIN district AS d ON c.district_id = d.district_id WHERE c.gender = 'F' ORDER BY d.A11 ASC, c.birth_date ASC LIMIT 1 )",
+                "SELECT T1.account_id, ( SELECT max(A11) - min(A11) FROM district ) FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.district_id = ( SELECT district_id FROM client WHERE gender = 'F' ORDER BY birth_date ASC LIMIT 1 ) ORDER BY T2.A11 DESC NULLS LAST LIMIT 1"
+            ],
+            "mysql": [
+                "WITH ClientInfo AS ( SELECT c.client_id, c.district_id, c.birth_date FROM client AS c WHERE c.gender = 'F' AND c.birth_date = (SELECT MIN(birth_date) FROM client WHERE gender = 'F') ), DistrictInfo AS ( SELECT d.district_id, d.A11, (SELECT MAX(A11) - MIN(A11) FROM district) AS salary_gap FROM district AS d WHERE d.A11 = (SELECT MIN(A11) FROM district) ) SELECT DISTINCT a.account_id, di.salary_gap FROM account AS a JOIN disp AS dp ON a.account_id = dp.account_id JOIN ClientInfo AS ci ON dp.client_id = ci.client_id JOIN DistrictInfo AS di ON ci.district_id = di.district_id;",
+                "SELECT t1.account_id, ( SELECT max(district.a11) - min(district.a11) FROM district ) FROM account AS t1 JOIN district AS t2 ON t1.district_id = t2.district_id WHERE t2.district_id = ( SELECT client.district_id FROM client WHERE client.gender = 'F' ORDER BY -client.birth_date  LIMIT 1 ) ORDER BY t2.a11 DESC  LIMIT 1"
+            ],
+            "sqlserver": [
+                "SELECT [a].[account_id], (SELECT MAX([A11]) - MIN([A11]) FROM [district]) AS salary_gap FROM [account] AS [a] INNER JOIN [disp] AS [d] ON [a].[account_id] = [d].[account_id] INNER JOIN [client] AS [c] ON [d].[client_id] = [c].[client_id] INNER JOIN [district] AS [dist] ON [a].[district_id] = [dist].[district_id] WHERE [c].[gender] = 'F' AND [c].[birth_date] = ( SELECT MIN([birth_date]) FROM [client] WHERE [gender] = 'F' ) ORDER BY [dist].[A11] ASC",
+                " SELECT TOP 1 [T1].[account_id], (SELECT MAX([A11]) - MIN([A11]) FROM [district]) FROM [account] AS [T1] INNER JOIN [district] AS [T2] ON [T1].[district_id] = [T2].[district_id] WHERE [T2].[district_id] = (SELECT TOP 1 [district_id] FROM [client] WHERE [gender] = 'F' ORDER BY [birth_date] ASC) ORDER BY [T2].[A11] DESC "
+            ],
+            "spanner_pg": [
+                "SELECT \"disp\".\"account_id\", (SELECT MAX(\"A11\") - MIN(\"A11\") FROM \"district\") as gap FROM \"disp\" INNER JOIN \"client\" ON \"disp\".\"client_id\" = \"client\".\"client_id\" WHERE \"client\".\"client_id\" = ( SELECT \"c\".\"client_id\" FROM \"client\" AS \"c\" INNER JOIN \"district\" AS \"d\" ON \"c\".\"district_id\" = \"d\".\"district_id\" WHERE \"c\".\"gender\" = 'F' ORDER BY \"d\".\"A11\" ASC, \"c\".\"birth_date\" ASC LIMIT 1 )"
+            ],
+            "spanner_gsql": [
+                "SELECT `disp`.`account_id`, (SELECT MAX(`A11`) - MIN(`A11`) FROM `district`) as gap FROM `disp` INNER JOIN `client` ON `disp`.`client_id` = `client`.`client_id` WHERE `client`.`client_id` = ( SELECT `c`.`client_id` FROM `client` AS `c` INNER JOIN `district` AS `d` ON `c`.`district_id` = `d`.`district_id` WHERE `c`.`gender` = 'F' ORDER BY `d`.`A11` ASC, `c`.`birth_date` ASC LIMIT 1 )"
+            ],
+            "sqlite": [
+                "SELECT `disp`.`account_id`, (SELECT MAX(`A11`) - MIN(`A11`) FROM `district`) as gap FROM `disp` INNER JOIN `client` ON `disp`.`client_id` = `client`.`client_id` WHERE `client`.`client_id` = ( SELECT `c`.`client_id` FROM `client` AS `c` INNER JOIN `district` AS `d` ON `c`.`district_id` = `d`.`district_id` WHERE `c`.`gender` = 'F' ORDER BY `d`.`A11` ASC, `c`.`birth_date` ASC LIMIT 1 )"
+            ]
+        },
+        "eval_query": {},
+        "setup_sql": {},
+        "cleanup_sql": {},
+        "tags": [
+            "difficulty: challenging"
+        ],
+        "other": {
+            "question_id": 94,
+            "question": "List out the account numbers of female clients who are oldest and has lowest average salary, calculate the gap between this lowest average salary with the highest average salary?",
+            "evidence": "Female means gender = 'F'; A11 refers to average salary; Gap = highest average salary - lowest average salary; If the person A's birthdate > B's birthdate, it means that person B is order than person A.",
+            "SQLite_query": "SELECT T1.account_id , ( SELECT MAX(A11) - MIN(A11) FROM district ) FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.district_id = ( SELECT district_id FROM client WHERE gender = 'F' ORDER BY birth_date ASC LIMIT 1 ) ORDER BY T2.A11 DESC LIMIT 1",
+            "result_matched_postgres": true,
+            "result_matched_mysql": false,
+            "result_matched_sqlserver": false
+        }
+    },
+    {
+        "id": 7,
+        "nl_prompt": "List out the account numbers of clients who are youngest and have highest average salary? If the person A's birthdate < B's birthdate, it means that person B is younger than person A; A11 refers to average salary",
+        "query_type": "DQL",
+        "database": "financial",
+        "dialects": [
+            "postgres",
+            "mysql",
+            "sqlserver",
+            "googlesql",
+            "spanner_pg",
+            "spanner_gsql",
+            "sqlite"
+        ],
+        "golden_sql": {
+            "postgres": [
+                "SELECT T1.account_id FROM account AS T1 INNER JOIN client AS T2 ON T1.district_id = T2.district_id INNER JOIN district AS T3 ON T2.district_id = T3.district_id WHERE T2.birth_date = (SELECT MAX(birth_date) FROM client) -- Youngest client(s) AND T3.A11 = (SELECT MAX(A11) FROM district); -- District with highest avg salary",
+                "SELECT \"T1\".\"account_id\" FROM \"account\" AS \"T1\" INNER JOIN \"district\" AS \"T2\" ON \"T1\".\"district_id\" = \"T2\".\"district_id\" WHERE \"T2\".\"district_id\" = ( SELECT \"district_id\" FROM \"client\" ORDER BY \"birth_date\" DESC LIMIT 1 ) ORDER BY \"T2\".\"A11\" DESC NULLS LAST LIMIT 1"
+            ],
+            "googlesql": [
+                "SELECT T1.account_id FROM account AS T1 INNER JOIN client AS T2 ON T1.district_id = T2.district_id INNER JOIN district AS T3 ON T2.district_id = T3.district_id WHERE T2.birth_date = (SELECT MAX(birth_date) FROM client) -- Youngest client(s) AND T3.A11 = (SELECT MAX(A11) FROM district)",
+                "SELECT T1.account_id FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.district_id = ( SELECT district_id FROM client ORDER BY birth_date DESC LIMIT 1 ) ORDER BY T2.A11 DESC NULLS LAST LIMIT 1"
+            ],
+            "mysql": [
+                "SELECT DISTINCT `T1`.`account_id` FROM `disp` AS `T1` INNER JOIN `client` AS `T2` ON `T1`.`client_id` = `T2`.`client_id` INNER JOIN `district` AS `T3` ON `T2`.`district_id` = `T3`.`district_id` WHERE `T2`.`birth_date` = ( SELECT MAX(`birth_date`) FROM `client` WHERE `birth_date` IS NOT NULL ) ORDER BY `T3`.`A11` DESC LIMIT 1;",
+                "SELECT t1.account_id FROM account AS t1 JOIN district AS t2 ON t1.district_id = t2.district_id WHERE t2.district_id = ( SELECT client.district_id FROM client ORDER BY client.birth_date DESC  LIMIT 1 ) ORDER BY t2.a11 DESC  LIMIT 1"
+            ],
+            "sqlserver": [
+                "SELECT DISTINCT [acc].[account_id] FROM [client] AS [c] JOIN [district] AS [d] ON [c].[district_id] = [d].[district_id] JOIN [disp] AS [dp] ON [c].[client_id] = [dp].[client_id] JOIN [account] AS [acc] ON [dp].[account_id] = [acc].[account_id] WHERE [c].[birth_date] = (SELECT MAX([birth_date]) FROM [client]) AND [d].[A11] = (SELECT MAX([A11]) FROM [district]);",
+                " SELECT TOP 1 [T1].[account_id] FROM [account] AS [T1] INNER JOIN [district] AS [T2] ON [T1].[district_id] = [T2].[district_id] WHERE [T2].[district_id] = (SELECT TOP 1 [district_id] FROM [client] ORDER BY [birth_date] DESC) ORDER BY [T2].[A11] DESC "
+            ],
+            "spanner_pg": [
+                "SELECT T1.account_id FROM account AS T1 INNER JOIN client AS T2 ON T1.district_id = T2.district_id INNER JOIN district AS T3 ON T2.district_id = T3.district_id WHERE T2.birth_date = (SELECT MAX(birth_date) FROM client) -- Youngest client(s) AND T3.A11 = (SELECT MAX(A11) FROM district); -- District with highest avg salary"
+            ],
+            "spanner_gsql": [
+                "SELECT T1.account_id FROM account AS T1 INNER JOIN client AS T2 ON T1.district_id = T2.district_id INNER JOIN district AS T3 ON T2.district_id = T3.district_id WHERE T2.birth_date = (SELECT MAX(birth_date) FROM client) -- Youngest client(s) AND T3.A11 = (SELECT MAX(A11) FROM district); -- District with highest avg salary"
+            ],
+            "sqlite": [
+                "SELECT T1.account_id FROM account AS T1 INNER JOIN client AS T2 ON T1.district_id = T2.district_id INNER JOIN district AS T3 ON T2.district_id = T3.district_id WHERE T2.birth_date = (SELECT MAX(birth_date) FROM client) -- Youngest client(s) AND T3.A11 = (SELECT MAX(A11) FROM district); -- District with highest avg salary"
+            ]
+        },
+        "eval_query": {},
+        "setup_sql": {},
+        "cleanup_sql": {},
+        "tags": [
+            "difficulty: moderate"
+        ],
+        "other": {
+            "question_id": 95,
+            "question": "List out the account numbers of clients who are youngest and have highest average salary?",
+            "evidence": "If the person A's birthdate < B's birthdate, it means that person B is younger than person A; A11 refers to average salary",
+            "SQLite_query": "SELECT T1.account_id FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.district_id = ( SELECT district_id FROM client ORDER BY birth_date DESC LIMIT 1 ) ORDER BY T2.A11 DESC LIMIT 1",
+            "result_matched_postgres": true,
+            "result_matched_mysql": true,
+            "result_matched_sqlserver": false
+        }
+    },
+    {
+        "id": 8,
+        "nl_prompt": "How many customers who choose statement of weekly issuance are Owner? 'POPLATEK TYDNE' stands for weekly issuance",
+        "query_type": "DQL",
+        "database": "financial",
+        "dialects": [
+            "postgres",
+            "mysql",
+            "sqlserver",
+            "googlesql",
+            "spanner_pg",
+            "spanner_gsql",
+            "sqlite"
+        ],
+        "golden_sql": {
+            "postgres": [
+                "SELECT COUNT(DISTINCT \"T1\".\"client_id\") FROM \"disp\" AS \"T1\" INNER JOIN \"account\" AS \"T2\" ON \"T1\".\"account_id\" = \"T2\".\"account_id\" WHERE \"T2\".\"frequency\" = 'POPLATEK TYDNE' AND \"T1\".\"type\" = 'OWNER'",
+                "SELECT COUNT(\"T1\".\"account_id\") FROM \"account\" AS \"T1\" INNER JOIN \"disp\" AS \"T2\" ON \"T1\".\"account_id\" = \"T2\".\"account_id\" WHERE \"T2\".\"type\" = 'Owner' AND \"T1\".\"frequency\" = 'POPLATEK TYDNE'"
+            ],
+            "googlesql": [
+                "SELECT COUNT(DISTINCT T1.client_id) FROM disp AS T1 INNER JOIN account AS T2 ON T1.account_id = T2.account_id WHERE T2.frequency = 'POPLATEK TYDNE' AND T1.type = 'OWNER'",
+                "SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN disp AS T2 ON T1.account_id = T2.account_id WHERE T2.type = 'Owner' AND T1.frequency = 'POPLATEK TYDNE'"
+            ],
+            "mysql": [
+                "SELECT CAST(count(t1.account_id) as DECIMAL) FROM account AS t1 JOIN disp AS t2 ON t1.account_id = t2.account_id WHERE t2.type = 'Owner' AND t1.frequency = 'POPLATEK TYDNE'"
+            ],
+            "sqlserver": [
+                " SELECT COUNT([T1].[account_id]) FROM [account] AS [T1] INNER JOIN [disp] AS [T2] ON [T1].[account_id] = [T2].[account_id] WHERE [T2].[type] = 'Owner' AND [T1].[frequency] = 'POPLATEK TYDNE' "
+            ],
+            "spanner_pg": [
+                "SELECT COUNT(DISTINCT \"T1\".\"client_id\") FROM \"disp\" AS \"T1\" INNER JOIN \"account\" AS \"T2\" ON \"T1\".\"account_id\" = \"T2\".\"account_id\" WHERE \"T2\".\"frequency\" = 'POPLATEK TYDNE' AND \"T1\".\"type\" = 'OWNER'"
+            ],
+            "spanner_gsql": [
+                "SELECT COUNT(DISTINCT `T1`.`client_id`) FROM `disp` AS `T1` INNER JOIN `account` AS `T2` ON `T1`.`account_id` = `T2`.`account_id` WHERE `T2`.`frequency` = 'POPLATEK TYDNE' AND `T1`.`type` = 'OWNER'"
+            ],
+            "sqlite": [
+                "SELECT COUNT(DISTINCT `T1`.`client_id`) FROM `disp` AS `T1` INNER JOIN `account` AS `T2` ON `T1`.`account_id` = `T2`.`account_id` WHERE `T2`.`frequency` = 'POPLATEK TYDNE' AND `T1`.`type` = 'OWNER'"
+            ]
+        },
+        "eval_query": {},
+        "setup_sql": {},
+        "cleanup_sql": {},
+        "tags": [
+            "difficulty: simple"
+        ],
+        "other": {
+            "question_id": 96,
+            "question": "How many customers who choose statement of weekly issuance are Owner?",
+            "evidence": "'POPLATEK TYDNE' stands for weekly issuance",
+            "SQLite_query": "SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN disp AS T2 ON T1.account_id = T2.account_id WHERE T2.type = 'Owner' AND T1.frequency = 'POPLATEK TYDNE'",
+            "result_matched_postgres": true,
+            "result_matched_mysql": false,
+            "result_matched_sqlserver": false
+        }
+    },
+    {
+        "id": 9,
+        "nl_prompt": "List out the clients who choose statement of issuance after transaction are Disponent? 'POPLATEK PO OBRATU' stands for issuance after transaction",
+        "query_type": "DQL",
+        "database": "financial",
+        "dialects": [
+            "postgres",
+            "mysql",
+            "sqlserver",
+            "googlesql",
+            "spanner_pg",
+            "spanner_gsql",
+            "sqlite"
+        ],
+        "golden_sql": {
+            "postgres": [
+                "SELECT \"T2\".\"client_id\" FROM \"account\" AS \"T1\" INNER JOIN \"disp\" AS \"T2\" ON \"T1\".\"account_id\" = \"T2\".\"account_id\" WHERE \"T1\".\"frequency\" = 'POPLATEK PO OBRATU' AND \"T2\".\"type\" = 'DISPONENT'"
+            ],
+            "googlesql": [
+                "SELECT T2.client_id FROM account AS T1 INNER JOIN disp AS T2 ON T1.account_id = T2.account_id WHERE T1.frequency = 'POPLATEK PO OBRATU' AND T2.type = 'DISPONENT'"
+            ],
+            "mysql": [
+                "SELECT t2.client_id FROM account AS t1 JOIN disp AS t2 ON t1.account_id = t2.account_id WHERE t1.frequency = 'POPLATEK PO OBRATU' AND t2.type = 'DISPONENT'"
+            ],
+            "sqlserver": [
+                " SELECT [T2].[client_id] FROM [account] AS [T1] INNER JOIN [disp] AS [T2] ON [T1].[account_id] = [T2].[account_id] WHERE [T1].[frequency] = 'POPLATEK PO OBRATU' AND [T2].[type] = 'DISPONENT' "
+            ],
+            "spanner_pg": [
+                "SELECT \"T2\".\"client_id\" FROM \"account\" AS \"T1\" INNER JOIN \"disp\" AS \"T2\" ON \"T1\".\"account_id\" = \"T2\".\"account_id\" WHERE \"T1\".\"frequency\" = 'POPLATEK PO OBRATU' AND \"T2\".\"type\" = 'DISPONENT'"
+            ],
+            "spanner_gsql": [
+                "SELECT `T2`.`client_id` FROM `account` AS `T1` INNER JOIN `disp` AS `T2` ON `T1`.`account_id` = `T2`.`account_id` WHERE `T1`.`frequency` = 'POPLATEK PO OBRATU' AND `T2`.`type` = 'DISPONENT'"
+            ],
+            "sqlite": [
+                "SELECT `T2`.`client_id` FROM `account` AS `T1` INNER JOIN `disp` AS `T2` ON `T1`.`account_id` = `T2`.`account_id` WHERE `T1`.`frequency` = 'POPLATEK PO OBRATU' AND `T2`.`type` = 'DISPONENT'"
+            ]
+        },
+        "eval_query": {},
+        "setup_sql": {},
+        "cleanup_sql": {},
+        "tags": [
+            "difficulty: simple"
+        ],
+        "other": {
+            "question_id": 97,
+            "question": "List out the clients who choose statement of issuance after transaction are Disponent?",
+            "evidence": "'POPLATEK PO OBRATU' stands for issuance after transaction",
+            "SQLite_query": "SELECT T2.client_id FROM account AS T1 INNER JOIN disp AS T2 ON T1.account_id = T2.account_id WHERE T1.frequency = 'POPLATEK PO OBRATU' AND T2.type = 'DISPONENT'",
+            "result_matched_postgres": true,
+            "result_matched_mysql": true,
+            "result_matched_sqlserver": false
+        }
+    },
+    {
+        "id": 10,
+        "nl_prompt": "Among the accounts who have approved loan date in 1997, list out the accounts that have the lowest approved amount and choose weekly issuance statement. 'POPLATEK TYDNE' stands for weekly issuance",
+        "query_type": "DQL",
+        "database": "financial",
+        "dialects": [
+            "postgres",
+            "mysql",
+            "sqlserver",
+            "googlesql",
+            "spanner_pg",
+            "spanner_gsql",
+            "sqlite"
+        ],
+        "golden_sql": {
+            "postgres": [
+                "SELECT \"T2\".\"account_id\" FROM loan AS \"T1\" INNER JOIN account AS \"T2\" ON \"T1\".\"account_id\" = \"T2\".\"account_id\" WHERE to_char(\"T1\".\"date\"::timestamp, 'YYYY') = '1997' AND \"T2\".\"frequency\" = 'POPLATEK TYDNE' ORDER BY \"T1\".\"amount\" NULLS LAST LIMIT 1"
+            ],
+            "googlesql": [
+                "SELECT T2.account_id FROM loan AS T1 INNER JOIN account AS T2 ON T1.account_id = T2.account_id WHERE EXTRACT(YEAR FROM T1.date) = 1997 AND T2.frequency = 'POPLATEK TYDNE' ORDER BY T1.amount NULLS LAST LIMIT 1"
+            ],
+            "mysql": [
+                "SELECT t2.account_id FROM loan AS t1 JOIN account AS t2 ON t1.account_id = t2.account_id WHERE DATE_FORMAT(t1.date, '%Y') = '1997' AND t2.frequency = 'POPLATEK TYDNE' ORDER BY t1.amount LIMIT 1"
+            ],
+            "sqlserver": [
+                " SELECT TOP 1 [T2].[account_id] FROM [loan] AS [T1] INNER JOIN [account] AS [T2] ON [T1].[account_id] = [T2].[account_id] WHERE YEAR([T1].[date]) = 1997 AND [T2].[frequency] = 'POPLATEK TYDNE' ORDER BY [T1].[amount]  "
+            ],
+            "spanner_pg": [
+                "SELECT \"T2\".\"account_id\" FROM loan AS \"T1\" INNER JOIN account AS \"T2\" ON \"T1\".\"account_id\" = \"T2\".\"account_id\" WHERE to_char(\"T1\".\"date\"::timestamptz, 'YYYY') = '1997' AND \"T2\".\"frequency\" = 'POPLATEK TYDNE' ORDER BY \"T1\".\"amount\" NULLS LAST LIMIT 1"
+            ],
+            "spanner_gsql": [
+                "SELECT `T2`.`account_id` FROM loan AS `T1` INNER JOIN account AS `T2` ON `T1`.`account_id` = `T2`.`account_id` WHERE CAST(EXTRACT(YEAR FROM `T1`.`date`) AS STRING) = '1997' AND `T2`.`frequency` = 'POPLATEK TYDNE' ORDER BY `T1`.`amount` LIMIT 1"
+            ],
+            "sqlite": [
+                "SELECT `T2`.`account_id` FROM loan AS `T1` INNER JOIN account AS `T2` ON `T1`.`account_id` = `T2`.`account_id` WHERE CAST(EXTRACT(YEAR FROM `T1`.`date`) AS STRING) = '1997' AND `T2`.`frequency` = 'POPLATEK TYDNE' ORDER BY `T1`.`amount` LIMIT 1"
+            ]
+        },
+        "eval_query": {},
+        "setup_sql": {},
+        "cleanup_sql": {},
+        "tags": [
+            "difficulty: moderate"
+        ],
+        "other": {
+            "question_id": 98,
+            "question": "Among the accounts who have approved loan date in 1997, list out the accounts that have the lowest approved amount and choose weekly issuance statement.",
+            "evidence": "'POPLATEK TYDNE' stands for weekly issuance",
+            "SQLite_query": "SELECT T2.account_id FROM loan AS T1 INNER JOIN account AS T2 ON T1.account_id = T2.account_id WHERE STRFTIME('%Y', T1.date) = '1997' AND T2.frequency = 'POPLATEK TYDNE' ORDER BY T1.amount LIMIT 1",
+            "result_matched_postgres": true,
+            "result_matched_mysql": true,
+            "result_matched_sqlserver": false
+        }
+    }
+]

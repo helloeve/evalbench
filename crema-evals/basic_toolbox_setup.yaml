@@ -1,0 +1,18 @@
+gemini_cli_version: "@google/gemini-cli@0.35.0"
+generator: gemini_cli
+env:
+  GOOGLE_CLOUD_PROJECT: "astana-evaluation"
+  GOOGLE_CLOUD_LOCATION: "us-central1"
+  GOOGLE_GENAI_USE_VERTEXAI: "true"
+setup:
+  extensions:
+    "https://github.com/gemini-cli-extensions/alloydb":
+      settings:
+        ALLOYDB_POSTGRES_PROJECT: "astana-evaluation"
+        ALLOYDB_POSTGRES_CLUSTER: "my-cluster"
+        ALLOYDB_POSTGRES_INSTANCE: "my-cluster-primary"
+        ALLOYDB_POSTGRES_REGION: "us-central1"
+        ALLOYDB_POSTGRES_DATABASE: "cymbalShop"
+        ALLOYDB_POSTGRES_USER: "postgres"
+        ALLOYDB_POSTGRES_PASSWORD: "Google123*"
+        ALLOYDB_POSTGRES_IP_TYPE: "PUBLIC"

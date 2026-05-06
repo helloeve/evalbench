@@ -1,0 +1,97 @@
+[
+  {
+    "id": "eval_001",
+    "nl_prompt": "How many accounts who choose issuance after transaction are staying in East Bohemia region?",
+    "query_type": "DQL",
+    "database": "financial",
+    "dialects": [
+      "postgres"
+    ],
+    "golden_sql": {
+      "postgres": [
+        "SELECT COUNT(DISTINCT \"T1\".\"account_id\") FROM \"account\" AS \"T1\" INNER JOIN \"district\" AS \"T2\" ON \"T1\".\"district_id\" = \"T2\".\"district_id\" WHERE \"T2\".\"A3\" = 'east Bohemia' AND \"T1\".\"frequency\" = 'POPLATEK PO OBRATU'"
+      ]
+    },
+    "eval_query": {},
+    "setup_sql": {},
+    "cleanup_sql": {},
+    "other": {},
+    "tags": []
+  },
+  {
+    "id": "eval_002",
+    "nl_prompt": "How many accounts who have region in Prague are eligible for loans?",
+    "query_type": "DQL",
+    "database": "financial",
+    "dialects": [
+      "postgres"
+    ],
+    "golden_sql": {
+      "postgres": [
+        "SELECT COUNT(\"T1\".\"account_id\") FROM \"account\" AS \"T1\" INNER JOIN \"loan\" AS \"T2\" ON \"T1\".\"account_id\" = \"T2\".\"account_id\" INNER JOIN \"district\" AS \"T3\" ON \"T1\".\"district_id\" = \"T3\".\"district_id\" WHERE \"T3\".\"A3\" = 'Prague'"
+      ]
+    },
+    "eval_query": {},
+    "setup_sql": {},
+    "cleanup_sql": {},
+    "other": {},
+    "tags": []
+  },
+  {
+    "id": "eval_003",
+    "nl_prompt": "The average unemployment ratio of 1995 and 1996, which one has higher percentage?",
+    "query_type": "DQL",
+    "database": "financial",
+    "dialects": [
+      "postgres"
+    ],
+    "golden_sql": {
+      "postgres": [
+        "SELECT DISTINCT CASE WHEN AVG(\"A13\") > AVG(\"A12\") THEN '1996' ELSE '1995' END FROM \"district\""
+      ]
+    },
+    "eval_query": {},
+    "setup_sql": {},
+    "cleanup_sql": {},
+    "other": {},
+    "tags": []
+  },
+  {
+    "id": "eval_004",
+    "nl_prompt": "List out the no. of districts that have female average salary is more than 6000 but less than 10000?",
+    "query_type": "DQL",
+    "database": "financial",
+    "dialects": [
+      "postgres"
+    ],
+    "golden_sql": {
+      "postgres": [
+        "SELECT COUNT(DISTINCT \"T1\".\"district_id\") FROM \"district\" AS \"T1\" INNER JOIN \"client\" AS \"T2\" ON \"T1\".\"district_id\" = \"T2\".\"district_id\" WHERE \"T2\".\"gender\" = 'F' AND \"T1\".\"A11\" BETWEEN 6000 AND 10000;"
+      ]
+    },
+    "eval_query": {},
+    "setup_sql": {},
+    "cleanup_sql": {},
+    "other": {},
+    "tags": []
+  },
+  {
+    "id": "eval_005",
+    "nl_prompt": "How many male customers who are living in North Bohemia have average salary greater than 8000?",
+    "query_type": "DQL",
+    "database": "financial",
+    "dialects": [
+      "postgres"
+    ],
+    "golden_sql": {
+      "postgres": [
+        "SELECT COUNT(\"T1\".\"client_id\") FROM \"client\" AS \"T1\" INNER JOIN \"district\" AS \"T2\" ON \"T1\".\"district_id\" = \"T2\".\"district_id\" WHERE \"T1\".\"gender\" = 'M' AND \"T2\".\"A3\" = 'north Bohemia' AND \"T2\".\"A11\" > 8000"
+      ]
+    },
+    "eval_query": {},
+    "setup_sql": {},
+    "cleanup_sql": {},
+    "other": {},
+    "tags": []
+  }
+]

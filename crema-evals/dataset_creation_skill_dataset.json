@@ -1,0 +1,12 @@
+{
+  "scenarios": [
+    {
+      "id": "crema-00",
+      "starting_prompt": "List my alloydb schemas",
+      "conversation_plan": "Ask the agent to list schemas in my alloydb",
+      "expected_trajectory": [],
+      "kind": "agents",
+      "max_turns": 15
+    }
+  ]
+}

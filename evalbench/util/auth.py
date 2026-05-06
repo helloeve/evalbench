@@ -86,6 +86,7 @@ def get_adc_user_email() -> str | None:
 
         # Check if it's a Service Account
         if hasattr(credentials, "service_account_email"):
+            logging.info(f"Using service account: {credentials.service_account_email}")
             return credentials.service_account_email
 
         # Check if it's a User Account (from gcloud auth application-default login)
@@ -100,6 +101,7 @@ def get_adc_user_email() -> str | None:
         )
 
         if response.status_code == 200:
+            logging.info(f"Using user email: {response.json().get('email')}")
             return response.json().get("email")
         else:
             logging.warning(

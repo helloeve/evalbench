@@ -1,0 +1,44 @@
+{
+  "templates": [
+    {
+      "nl_query": "How many accounts are there?",
+      "sql": "SELECT count(*) FROM account",
+      "intent": "Count all accounts",
+      "manifest": "Count all accounts",
+      "parameterized": {
+        "parameterized_sql": "SELECT count(*) FROM account",
+        "parameterized_intent": "Count all accounts"
+      }
+    },
+    {
+      "nl_query": "Show me loans with status X.",
+      "sql": "SELECT * FROM loan WHERE status = 'X'",
+      "intent": "Filter loans by status",
+      "manifest": "Filter loans by status",
+      "parameterized": {
+        "parameterized_sql": "SELECT * FROM loan WHERE status = 'X'",
+        "parameterized_intent": "Filter loans by status"
+      }
+    }
+  ],
+  "facets": [
+    {
+      "sql_snippet": "account.frequency = 'WEEKLY'",
+      "intent": "weekly accounts",
+      "manifest": "weekly accounts",
+      "parameterized": {
+        "parameterized_sql_snippet": "account.frequency = 'WEEKLY'",
+        "parameterized_intent": "weekly accounts"
+      }
+    },
+    {
+      "sql_snippet": "client.gender = 'F'",
+      "intent": "female clients",
+      "manifest": "female clients",
+      "parameterized": {
+        "parameterized_sql_snippet": "client.gender = 'F'",
+        "parameterized_intent": "female clients"
+      }
+    }
+  ]
+}

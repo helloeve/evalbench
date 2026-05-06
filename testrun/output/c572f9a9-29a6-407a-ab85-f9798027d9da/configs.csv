@@ -1,0 +1,24 @@
+job_id,run_time,config,value
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,experiment_config.dataset_config,/Users/whaoyu/git/evalbench/testrun/toy_golden.json
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,experiment_config.dataset_format,evalbench-standard-format
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,experiment_config.database_configs,['/Users/whaoyu/git/evalbench/testrun/db_config.yaml']
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,experiment_config.dialect,postgres
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,experiment_config.query_types,['dql']
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,experiment_config.model_config,/Users/whaoyu/git/evalbench/testrun/model_config.yaml
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,experiment_config.prompt_generator,NOOPGenerator
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,experiment_config.runners.eval_runners,10
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,experiment_config.runners.sqlgen_runners,10
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,experiment_config.scorers.llmrater.model_config,/Users/whaoyu/git/evalbench/testrun/llmrater_config.yaml
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,experiment_config.reporting.csv.output_directory,output/
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,experiment_config.num_evals_to_run,10
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,experiment_config.orchestrator,oneshot
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,model_config.generator,query_data_api
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,model_config.project_id,cloud-db-nl2sql
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,model_config.location,us-central1
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,model_config.context.datasource_references.alloydb.database_reference.project_id,cloud-db-nl2sql
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,model_config.context.datasource_references.alloydb.database_reference.region,us-central1
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,model_config.context.datasource_references.alloydb.database_reference.cluster_id,whaoyu-test
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,model_config.context.datasource_references.alloydb.database_reference.instance_id,whaoyu-test-primary
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,model_config.context.datasource_references.alloydb.database_reference.database_id,financial2
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,model_config.context.datasource_references.alloydb.agent_context_reference.context_set_id,projects/cloud-db-nl2sql/locations/us-east1/contextSets/whaoyu-evaluation
+c572f9a9-29a6-407a-ab85-f9798027d9da,2026-04-07 11:47:03.558819,db_configs.postgres,"[{'db_type': 'alloydb', 'dialect': 'postgres', 'database_name': 'financial', 'database_path': 'projects/cloud-db-nl2sql/locations/us-central1/clusters/whaoyu-test/instances/whaoyu-test-primary', 'max_executions_per_minute': 180, 'database_user': 'postgres', 'database_password': 'nl2sql', 'nl_config': ''}]"

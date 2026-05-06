@@ -153,8 +153,18 @@ class PGDB(DB):
             result: List = []
             eval_result: List = []
             error = None
+            
             try:
-                with self.engine.connect() as connection:
+                logging.info("Attempting to connect to the database...")
+                connection = self.engine.connect()
+                logging.info("Successfully connected to the database.")
+            except Exception as e:
+                logging.exception(f"Connection step failed: {e}")
+                return [], [], f"Connection failed: {str(e)}"
+
+            try:
+                logging.info("Attempting to execute query...")
+                with connection:
                     with connection.begin() as transaction:
                         resultset = connection.execute(text(query))
                         if resultset.returns_rows:
@@ -162,19 +172,21 @@ class PGDB(DB):
                             result.extend(r._asdict() for r in rows)
 
                         if eval_query:
-                            eval_resultset = connection.execute(
-                                text(eval_query))
+                            eval_resultset = connection.execute(text(eval_query))
                             if eval_resultset.returns_rows:
                                 eval_rows = eval_resultset.fetchall()
-                                eval_result.extend(r._asdict()
-                                                   for r in eval_rows)
+                                eval_result.extend(r._asdict() for r in eval_rows)
 
                         if rollback:
                             transaction.rollback()
+                logging.info("Query executed successfully.")
             except Exception as e:
-                error = str(e)
+                logging.error(f"Execution step failed: {e}")
+                error = f"Execution failed: {str(e)}"
                 if "57P03" in error:
                     raise ResourceExhaustedError("DB Exhausted") from e
+                    
+            logging.info(f"Execution result: {result}, {eval_result}, {error}")
             return result, eval_result, error
 
         try:

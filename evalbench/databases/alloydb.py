@@ -22,11 +22,20 @@ class AlloyDB(PGDB):
             CONNECTOR._alloydb_api_endpoint = db_config['api_endpoint']
 
         def get_conn_alloydb():
+            import logging
+            logging.info(f"AlloyDB connecting with password is None? {self.password is None}")
+            
+            # Strip the suffix for service accounts as required by IAM auth
+            # db_user = self.username
+            # if db_user and db_user.endswith(".gserviceaccount.com"):
+            #     db_user = db_user.replace(".gserviceaccount.com", "")
+            #     logging.info(f"Stripped .gserviceaccount.com suffix. Using user: {db_user}")
+            logging.info(f"Use ADC: {self.use_adc} for user: {self.username}")   
             return CONNECTOR.connect(
                 self.db_path,
                 "pg8000",
                 user=self.username,
-                password=self.password,
+                password=self.password if self.password is not None else "",
                 db=self.db_name,
                 enable_iam_auth=self.use_adc,  # handled in PGDB
                 ip_type=AlloyDBIPTypes.PUBLIC,

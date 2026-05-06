@@ -1,0 +1,14 @@
+{
+  "scenarios": [
+    {
+      "id": "crema-01",
+      "starting_prompt": "I need to list the database schema.",
+      "conversation_plan": "Ask the agent to list the database schema.",
+      "expected_trajectory": [
+        "my-alloydb-list-schemas"
+      ],
+      "kind": "tool",
+      "max_turns": 15
+    }
+  ]
+}

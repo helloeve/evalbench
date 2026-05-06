@@ -1,0 +1,38 @@
+############################################################
+### Dataset / Eval Items
+############################################################
+dataset_config: /Users/whaoyu/git/evalbench/testrun/toy_golden.json
+dataset_format: evalbench-standard-format
+database_configs:
+ - /Users/whaoyu/git/evalbench/testrun/db_config.yaml
+dialect: postgres    # DB connection mapping
+query_types:
+ - dql
+
+############################################################
+### Prompt and Generation Modules
+############################################################
+model_config: /Users/whaoyu/git/evalbench/testrun/model_config.yaml
+prompt_generator: 'NOOPGenerator'
+
+############################################################
+### Evaluator Execution / Parallelism Tuning
+############################################################
+runners:
+  eval_runners: 10
+  sqlgen_runners: 10
+
+############################################################
+### Scorer Related Configs
+############################################################
+scorers:
+  llmrater:
+    model_config: /Users/whaoyu/git/evalbench/testrun/llmrater_config.yaml
+
+############################################################
+### Reporting Related Configs
+############################################################
+reporting:
+  csv:
+    output_directory: 'output/'
+num_evals_to_run: 10
