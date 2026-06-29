@@ -1,0 +1,51 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+
+# Variant: toolbox_cli_skill (helloeve/cloud-sql-postgresql @ toolbox-cli).
+# Single unified skill bundled as a local Claude Code plugin marketplace.
+# Run from the evalbench repo root:
+#   uv run python evalbench/evalbench.py \
+#     --experiment_config horizontal_experiment/toolbox_cli_skill/run_config.yaml
+
+############################################################
+### Dataset
+############################################################
+dataset_config: horizontal_experiment/dataset.json
+dataset_format: agent-format
+
+############################################################
+### Orchestrator + Models
+############################################################
+orchestrator: agent
+model_config: horizontal_experiment/toolbox_cli_skill/claude_code_model.yaml
+simulated_user_model_config: horizontal_experiment/judge_model.yaml
+
+runners:
+  agent_runners: 1
+
+############################################################
+### Scorers
+############################################################
+scorers:
+  # Qualitative (judge-based)
+  goal_completion:
+    model_config: horizontal_experiment/judge_model.yaml
+
+  # Performance / trajectory
+  turn_count: {}
+  end_to_end_latency: {}
+  tool_call_latency: {}
+  token_consumption: {}
+  skills_trajectory: {}
+
+############################################################
+### Reporting
+############################################################
+reporting:
+  csv:
+    output_directory: 'results/horizontal_experiment/toolbox_cli_skill'

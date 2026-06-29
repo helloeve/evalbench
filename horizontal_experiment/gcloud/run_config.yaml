@@ -1,0 +1,50 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+
+# Variant: gcloud (bare Claude Code, no MCP, no skills).
+# Baseline for the horizontal comparison.
+# Run from the evalbench repo root:
+#   uv run python evalbench/evalbench.py \
+#     --experiment_config horizontal_experiment/gcloud/run_config.yaml
+
+############################################################
+### Dataset
+############################################################
+dataset_config: horizontal_experiment/dataset.json
+dataset_format: agent-format
+
+############################################################
+### Orchestrator + Models
+############################################################
+orchestrator: agent
+model_config: horizontal_experiment/gcloud/claude_code_model.yaml
+simulated_user_model_config: horizontal_experiment/judge_model.yaml
+
+runners:
+  agent_runners: 1
+
+############################################################
+### Scorers
+############################################################
+# Skill / trajectory scorers are intentionally omitted: there are no named
+# skills or tool definitions to compare against, so they would always score 0.
+scorers:
+  goal_completion:
+    model_config: horizontal_experiment/judge_model.yaml
+
+  turn_count: {}
+  end_to_end_latency: {}
+  tool_call_latency: {}
+  token_consumption: {}
+
+############################################################
+### Reporting
+############################################################
+reporting:
+  csv:
+    output_directory: 'results/horizontal_experiment/gcloud'

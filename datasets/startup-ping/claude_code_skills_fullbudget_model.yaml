@@ -1,0 +1,24 @@
+claude_code_version: "@anthropic-ai/claude-code@2.1.145"
+
+generator: claude_code
+
+model: "claude-opus-4-8"
+
+# Vertex AI auth (GCP ADC, no API key).
+use_vertex: true
+vertex_project_id: "astana-evaluation"
+vertex_region: "global"
+
+env:
+  GOOGLE_CLOUD_PROJECT: "astana-evaluation"
+  GOOGLE_CLOUD_LOCATION: "us-central1"
+
+setup:
+  # Same 67-skill plugin marketplace as claude_code_skills_model.yaml,
+  # but bumps Claude Code's skill-listing budget so descriptions for
+  # plugin skills also load into the system prompt (the default is
+  # name-only registration with a small char budget).
+  skills_dir: "/tmp/plugin"
+  settings:
+    skillListingBudgetFraction: 1.0
+    skillListingMaxDescChars: 65536

@@ -185,6 +185,41 @@ class GeminiCliGenerator(AgentCliGenerator):
         skills_config = self.setup_config.get("skills", [])
         self._setup_skills(skills_config)
 
+        # Bulk-copy skills from a directory (every subdir containing SKILL.md
+        # is treated as one skill). Useful when comparing many skills at once
+        # without listing each one individually under setup.skills.
+        skills_from_dir = self.setup_config.get("skills_from_dir")
+        if skills_from_dir:
+            self._setup_skills_from_dir(skills_from_dir)
+
+    def _setup_skills_from_dir(self, skills_from_dir: str):
+        """Copies every subdir containing a SKILL.md from ``skills_from_dir``
+        into the fake home's ``.gemini/skills/`` directory. Gemini CLI then
+        auto-discovers them at startup, same as for skills installed by name.
+        """
+        if not os.path.isdir(skills_from_dir):
+            logging.warning(
+                f"skills_from_dir not a directory: {skills_from_dir}")
+            return
+        copied = 0
+        for entry in sorted(os.listdir(skills_from_dir)):
+            src = os.path.join(skills_from_dir, entry)
+            if not os.path.isdir(src):
+                continue
+            if not os.path.exists(os.path.join(src, "SKILL.md")):
+                continue
+            dst = os.path.join(self.skills_dir, entry)
+            if os.path.exists(dst):
+                shutil.rmtree(dst)
+            try:
+                shutil.copytree(src, dst)
+                copied += 1
+            except Exception as e:
+                logging.error(f"Failed to copy skill {entry}: {e}")
+        logging.info(
+            f"Copied {copied} skills from {skills_from_dir} to "
+            f"{self.skills_dir}")
+
     def _setup_npm_auth(self):
         """Sets up NPM authentication for private registries in the FAKE HOME."""
         logging.info("Fetching new access token via gcloud auth command")

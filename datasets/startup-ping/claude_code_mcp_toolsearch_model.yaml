@@ -1,0 +1,30 @@
+claude_code_version: "@anthropic-ai/claude-code@2.1.145"
+
+generator: claude_code
+
+model: "claude-opus-4-8"
+
+# Vertex AI auth (GCP ADC, no API key).
+use_vertex: true
+vertex_project_id: "astana-evaluation"
+vertex_region: "global"
+
+env:
+  GOOGLE_CLOUD_PROJECT: "astana-evaluation"
+  GOOGLE_CLOUD_LOCATION: "us-central1"
+  # Tool Search is OFF by default on Vertex AI. Force it on so MCP tool
+  # definitions are discovered on demand instead of preloaded into the
+  # system prompt every turn. Supported on Opus >= 4.5 / Sonnet >= 4.5
+  # via Vertex.
+  ENABLE_TOOL_SEARCH: "true"
+
+setup:
+  mcp_servers:
+    "cloud-sql":
+      httpUrl: "https://sqladmin.googleapis.com/mcp"
+      authProviderType: google_credentials
+      oauth:
+        scopes:
+        - https://www.googleapis.com/auth/cloud-platform
+      headers:
+        X-Goog-User-Project: astana-evaluation

@@ -1,0 +1,37 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+
+# Variant: toolbox_agent_skill -- helloeve/cloud-sql-postgresql @ main.
+# Eight per-domain skill folders under skills/, each invoked by the agent
+# as `node <skill_dir>/scripts/<tool>.js '{...}'`.
+#
+# The skills_dir path is populated by horizontal_experiment/setup_skills.sh,
+# which also writes a .claude-plugin/marketplace.json into the clone so
+# Claude Code can register it as a local plugin marketplace.
+#
+# CLOUD_SQL_POSTGRES_* are NOT listed under env: on purpose -- per-skill
+# scripts read them directly from the parent shell's environment. Export
+# them before running this variant. See horizontal_experiment/README.md.
+
+claude_code_version: "@anthropic-ai/claude-code@2.1.145"
+generator: claude_code
+
+model: "claude-opus-4-8"
+
+use_vertex: true
+vertex_project_id: "astana-evaluation"
+vertex_region: "global"
+
+env:
+  GOOGLE_CLOUD_PROJECT: "astana-evaluation"
+  GOOGLE_CLOUD_LOCATION: "us-central1"
+
+setup:
+  # Absolute path required: Claude Code resolves the marketplace at plugin
+  # registration time, before evalbench knows its CWD will stay put.
+  skills_dir: "/Users/whaoyu/git/evalbench/horizontal_experiment/_skills/main"

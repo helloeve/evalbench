@@ -1,0 +1,66 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+
+# Variant: onemcp -- Claude Code + Google's managed Cloud SQL admin MCP
+# endpoint (https://sqladmin.googleapis.com/mcp). No local skill files.
+#
+# `use_real_home: true` so this run uses the developer's local
+# ~/.claude/ directly instead of a sandboxed fake_home. This is the only
+# way to reach the cloud-sql MCP endpoint on macOS today: Claude Code
+# persists MCP OAuth refresh tokens via keytar, which needs the macOS
+# Security framework to resolve a real user keychain -- repointing HOME
+# breaks that. Trade-off: this variant is no longer hermetic, so it
+# can't run in the service-based (eval_server.py) deployment.
+#
+# Prerequisites (run these once in your normal shell BEFORE invoking
+# horizontal_experiment/run.sh onemcp):
+#   1. Install Claude Code locally: npm i -g @anthropic-ai/claude-code
+#   2. Authenticate: claude  (and follow the in-product setup)
+#   3. Register the cloud-sql MCP server in ~/.claude/. Either:
+#       a. Add it via Claude Code's UI / claude mcp commands, OR
+#       b. Edit ~/.claude/mcp_servers.json to include:
+#          {
+#            "mcpServers": {
+#              "cloud-sql": {
+#                "type": "http",
+#                "url": "https://sqladmin.googleapis.com/mcp",
+#                "oauth": {
+#                  "clientId": "<your-client-id>.apps.googleusercontent.com",
+#                  "callbackPort": 8080
+#                }
+#              }
+#            }
+#          }
+#   4. Run any prompt that triggers the cloud-sql tool so Claude Code
+#      completes the OAuth browser flow once and caches the refresh
+#      token in your macOS keychain. After that, every subsequent eval
+#      run reuses the cached token silently.
+#
+# In this mode the `setup:` block of the YAML is ignored: ~/.claude/ is
+# the source of truth. Tool Search and other env vars in `env:` still
+# apply via the run.sh exports.
+
+claude_code_version: "@anthropic-ai/claude-code@2.1.145"
+generator: claude_code
+
+model: "claude-opus-4-8"
+
+use_vertex: true
+vertex_project_id: "astana-evaluation"
+vertex_region: "global"
+
+# Use the developer's real ~/.claude/ -- needed for the MCP OAuth
+# keychain path. See the prerequisite list at the top of this file.
+use_real_home: true
+
+env:
+  GOOGLE_CLOUD_PROJECT: "astana-evaluation"
+  GOOGLE_CLOUD_LOCATION: "us-central1"
+
+# No setup: block -- use_real_home: true ignores it. Configure MCP
+# servers and any plugins via your local ~/.claude/.

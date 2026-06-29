@@ -1,0 +1,15 @@
+{
+  "scenarios": [
+    {
+      "id": "startup-ping-01",
+      "starting_prompt": "Respond with exactly the single word: pong",
+      "conversation_plan": "Single-turn trivial response. The agent should reply with 'pong' and call no tools. Purpose of this scenario is to measure baseline startup token consumption (system prompt + tool-definition injection) — not the response itself.",
+      "expected_trajectory": [],
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "astana-evaluation"
+      },
+      "kind": "tools",
+      "max_turns": 1
+    }
+  ]
+}

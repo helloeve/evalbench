@@ -1,0 +1,27 @@
+############################################################
+### Dataset / Eval Items
+############################################################
+dataset_config: datasets/startup-ping/startup-ping.evalset.json
+dataset_format: agent-format
+
+orchestrator: agent
+model_config: datasets/startup-ping/claude_code_mcp_model.yaml
+simulated_user_model_config: datasets/model_configs/gemini_2.5_pro_model.yaml
+
+runners:
+  agent_runners: 1
+
+############################################################
+### Scorer Related Configs
+############################################################
+scorers:
+  token_consumption: {}
+  turn_count: {}
+  end_to_end_latency: {}
+
+############################################################
+### Reporting Related Configs
+############################################################
+reporting:
+  csv:
+    output_directory: 'results/startup-ping/claude_mcp'

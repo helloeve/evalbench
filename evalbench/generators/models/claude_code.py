@@ -31,8 +31,20 @@ class ClaudeCodeGenerator(AgentCliGenerator):
 
         self.real_home = os.environ.get("HOME", os.path.expanduser("~"))
 
+        # `use_real_home: true` (model config) skips the fake-home sandbox
+        # entirely: HOME stays as the developer's real home so the macOS
+        # Security framework keeps working (needed for MCP OAuth refresh
+        # tokens that Claude Code persists via keytar). In this mode the
+        # YAML `setup:` block is ignored -- ~/.claude/ is the source of
+        # truth and the user is expected to have configured MCP servers,
+        # plugins, settings, etc. via their normal local Claude Code
+        # workflow before invoking the eval.
+        self.use_real_home = bool(querygenerator_config.get("use_real_home"))
+
+        if self.use_real_home:
+            self.fake_home = self.real_home
         # If running via eval_server.py (gRPC), use session-specific path in shared volume
-        if sys.argv[0].endswith("eval_server.py"):
+        elif sys.argv[0].endswith("eval_server.py"):
             session_id = querygenerator_config.get("session_id")
             if not session_id:
                 ctx_id = rpc_id_var.get()
@@ -49,12 +61,16 @@ class ClaudeCodeGenerator(AgentCliGenerator):
         os.makedirs(self.claude_config_dir, exist_ok=True)
 
         # When running as root, chown fake_home so the non-root claudeuser
-        # (used to run Claude Code) can write to it.
-        self._chown_for_claudeuser = os.getuid() == 0
+        # (used to run Claude Code) can write to it. Skip in use_real_home
+        # mode -- we must not chown the developer's $HOME.
+        self._chown_for_claudeuser = (
+            os.getuid() == 0 and not self.use_real_home
+        )
 
         self.env = querygenerator_config.get("env") or {}
-        self.env["HOME"] = self.fake_home
-        self.env["IS_SANDBOX"] = "1"
+        if not self.use_real_home:
+            self.env["HOME"] = self.fake_home
+            self.env["IS_SANDBOX"] = "1"
 
         api_key = self.env.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_API_KEY")
 
@@ -78,8 +94,14 @@ class ClaudeCodeGenerator(AgentCliGenerator):
                 if vertex_region:
                     self.env["CLOUD_ML_REGION"] = vertex_region
 
+                # use_real_home: no need to copy gcloud config -- the
+                # real ~/.config/gcloud is already on disk and the env
+                # variables resolved by gcloud / ADC will find it via the
+                # standard search path.
+                if self.use_real_home:
+                    pass
                 # Skip ADC setup if Service Account key is available
-                if not os.path.exists("/etc/evalbench-sa-key/key.json"):
+                elif not os.path.exists("/etc/evalbench-sa-key/key.json"):
                     fake_gcloud_dir = os.path.join(
                         self.fake_home, ".config", "gcloud")
 
@@ -128,15 +150,22 @@ class ClaudeCodeGenerator(AgentCliGenerator):
                     # Explicitly set GOOGLE_APPLICATION_CREDENTIALS for Claude if secret is mounted
                     self.env["GOOGLE_APPLICATION_CREDENTIALS"] = "/etc/evalbench-sa-key/key.json"
 
-        # Copy Claude Code auth credentials from real home to fake home
-        # so the CLI can authenticate in the sandboxed environment
-        real_claude_dir = os.path.join(self.real_home, ".claude")
-        if os.path.exists(real_claude_dir):
-            for fname in os.listdir(real_claude_dir):
-                src = os.path.join(real_claude_dir, fname)
-                dst = os.path.join(self.claude_config_dir, fname)
-                if os.path.isfile(src) and not os.path.exists(dst):
-                    shutil.copy2(src, dst)
+        # Copy Claude Code auth credentials from real home to fake home so the
+        # CLI can authenticate in the sandboxed environment. Restricted to a
+        # tight allowlist of auth-only files: copying everything (e.g.
+        # settings.json, CLAUDE.md) silently overrides the eval's model config
+        # — settings.json `env`, `model`, and `enabledPlugins` would leak the
+        # local developer's setup into the run.
+        # Skip entirely in use_real_home mode: src == dst, no copy needed.
+        if not self.use_real_home:
+            _AUTH_FILE_ALLOWLIST = {".credentials.json"}
+            real_claude_dir = os.path.join(self.real_home, ".claude")
+            if os.path.exists(real_claude_dir):
+                for fname in _AUTH_FILE_ALLOWLIST:
+                    src = os.path.join(real_claude_dir, fname)
+                    dst = os.path.join(self.claude_config_dir, fname)
+                    if os.path.isfile(src) and not os.path.exists(dst):
+                        shutil.copy2(src, dst)
 
         self.claude_code_version = querygenerator_config.get(
             "claude_code_version", "claude"
@@ -145,7 +174,14 @@ class ClaudeCodeGenerator(AgentCliGenerator):
         self.allowed_tools = querygenerator_config.get("allowed_tools")
 
         self.setup_config = querygenerator_config.get("setup", {})
-        if self.setup_config:
+        if self.setup_config and self.use_real_home:
+            logging.warning(
+                "use_real_home is true; ignoring `setup:` block (%s). "
+                "Configure MCP servers, plugins, and settings via your local "
+                "~/.claude/ instead.",
+                sorted(self.setup_config.keys()),
+            )
+        elif self.setup_config:
             self._setup()
 
     def _setup(self):
@@ -161,6 +197,8 @@ class ClaudeCodeGenerator(AgentCliGenerator):
         and enable its first plugin via `enabledPlugins`, so Claude Code loads
         the skills automatically without interactive `/plugin install`.
         """
+        self._plugins_registered = False
+
         mcp_servers_config = self.setup_config.get("mcp_servers", {})
         if mcp_servers_config:
             self._setup_mcp_servers(mcp_servers_config)
@@ -176,6 +214,29 @@ class ClaudeCodeGenerator(AgentCliGenerator):
         skills_dir_path = self.setup_config.get("skills_dir")
         if skills_dir_path:
             self._setup_skills_from_dir(skills_dir_path)
+
+        # Claude Code only honors a marketplace's `enabledPlugins` *after* it
+        # has populated ~/.claude/plugins/{known_marketplaces,installed_plugins}.json
+        # itself -- which it does lazily on the first CLI invocation. The first
+        # real eval call therefore runs without the plugin loaded; the second
+        # call onwards has it. Fire a trivial throwaway call here to absorb
+        # that warm-up so measured runs always see plugins as activated.
+        if self._plugins_registered:
+            self._warm_up_plugins()
+
+    def _warm_up_plugins(self):
+        """Trigger Claude Code's lazy plugin install/activation.
+
+        Issues a no-op prompt so the CLI writes known_marketplaces.json and
+        installed_plugins.json based on settings.json. Subsequent real calls
+        then see the plugin already active.
+        """
+        warmup_cmd = CLICommand(self.claude_code_version, "ok", env={})
+        try:
+            self._run_claude_code(warmup_cmd)
+            logging.info("Plugin warm-up call completed")
+        except Exception as e:
+            logging.warning(f"Plugin warm-up call failed: {e}")
 
     def _setup_mcp_servers(self, mcp_servers_config):
         """Configures MCP servers for Claude Code.
@@ -473,6 +534,7 @@ class ClaudeCodeGenerator(AgentCliGenerator):
             f"Registered plugin '{plugin_id}' "
             f"(directory source: {marketplace_dir})"
             + (f" with userConfig {list(plugin_config)}" if plugin_config else ""))
+        self._plugins_registered = True
 
     def generate_internal(self, cli_cmd):
         if not isinstance(cli_cmd, CLICommand):

@@ -1,0 +1,33 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+
+# Variant: gcloud -- bare Claude Code, no MCP, no skills.
+#
+# The baseline. Claude has only its built-in Bash tool and whatever the host
+# environment ships with (gcloud, psql, cloud-sql-proxy). Measures how far an
+# unprepared agent gets on the same scenarios.
+#
+# Export CLOUD_SQL_POSTGRES_* in the parent shell if you want the model to
+# reach the actual database (gcloud auth print-access-token, psql via
+# cloud-sql-proxy, gcloud sql ... etc). Trajectory and skill scorers will not
+# match because there are no named tools to compare against.
+
+claude_code_version: "@anthropic-ai/claude-code@2.1.145"
+generator: claude_code
+
+model: "claude-opus-4-8"
+
+use_vertex: true
+vertex_project_id: "astana-evaluation"
+vertex_region: "global"
+
+env:
+  GOOGLE_CLOUD_PROJECT: "astana-evaluation"
+  GOOGLE_CLOUD_LOCATION: "us-central1"
+
+# No setup block: no MCP servers, no skills, no plugin marketplace.

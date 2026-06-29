@@ -1,0 +1,24 @@
+claude_code_version: "@anthropic-ai/claude-code@2.1.145"
+
+generator: claude_code
+
+model: "claude-opus-4-8"
+
+# Vertex AI auth (GCP ADC, no API key).
+use_vertex: true
+vertex_project_id: "astana-evaluation"
+vertex_region: "global"
+
+env:
+  GOOGLE_CLOUD_PROJECT: "astana-evaluation"
+  GOOGLE_CLOUD_LOCATION: "us-central1"
+  # Tool Search OFF to measure raw skill-loading overhead. Comparable to
+  # the claude_nomcp baseline (also Tool Search OFF on Vertex by default).
+
+setup:
+  # Local plugin marketplace bundling all 67 skills from
+  # github.com/GoogleCloudPlatform/data-agent-kit (and its submodules)
+  # into a single synthetic plugin. Built at /tmp/plugin:
+  #   /tmp/plugin/.claude-plugin/marketplace.json
+  #   /tmp/plugin/plugin/skills/<67 skill dirs>
+  skills_dir: "/tmp/plugin"

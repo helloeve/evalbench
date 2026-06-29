@@ -1,0 +1,17 @@
+{
+  "scenarios": [
+    {
+      "id": "instance-status-prod-orders",
+      "starting_prompt": "What is the current status of the Cloud SQL instance 'prod-orders' in project astana-evaluation?",
+      "conversation_plan": "Single-turn instruction. The agent should call the get_instance tool/skill once with project=astana-evaluation and instance=prod-orders, then report the instance's state (expected RUNNABLE). Output size is fixed regardless of how many instances exist in the project, which keeps token_consumption stable across runs. No follow-up turns; max_turns is 3 only to leave room for retries.",
+      "expected_trajectory": [
+        "get_instance"
+      ],
+      "expected_skills": [
+        "cloud-sql-postgres-admin"
+      ],
+      "kind": "tools",
+      "max_turns": 3
+    }
+  ]
+}
